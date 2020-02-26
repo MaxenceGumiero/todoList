@@ -10,6 +10,8 @@ export class TodoComponent implements OnInit {
 
   constructor(public todoService: TodoService) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.todoService.getTodoListUrl();
+  }
 
 }
