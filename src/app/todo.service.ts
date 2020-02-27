@@ -10,7 +10,6 @@ import { catchError, retry } from 'rxjs/internal/operators';
 export class TodoService {
   public todos: Todo[];
   public todo: Todo;
-  // private todoListUrl = 'http://localhost:8000/todos';
   private apiURL = 'http://localhost:8000/todos';
   private httpOptions = {
     headers: new HttpHeaders({
@@ -40,12 +39,11 @@ export class TodoService {
     );
   }
 
-  // public getTodos = () => {
-  //   this.httpClient.get(this.apiURL)
-  //     .subscribe((response: Todo[]) => {
-  //       console.log(response);
-  //       this.todos = response;
-  //       console.log(this.todos);
-  //     });
-  // }
+  getOneTodo = (id: number): Observable<Todo> => {
+    return this.http.get<Todo>(`${this.apiURL}/${id}`).pipe(
+      retry(1),
+      catchError(this.handleError)
+    );
+  }
+
 }

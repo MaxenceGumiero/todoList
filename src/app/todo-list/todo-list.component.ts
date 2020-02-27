@@ -4,11 +4,11 @@ import { Router } from '@angular/router';
 import { Todo } from '../Todo';
 
 @Component({
-  selector: 'app-todo',
-  templateUrl: './todo.component.html',
-  styleUrls: ['./todo.component.css']
+  selector: 'app-todo-list',
+  templateUrl: './todo-list.component.html',
+  styleUrls: ['./todo-list.component.css']
 })
-export class TodoComponent implements OnInit {
+export class TodoListComponent implements OnInit {
 
   public isLoading: boolean;
 
@@ -21,7 +21,9 @@ export class TodoComponent implements OnInit {
     this.isLoading = true;
     return this.todoService.getTodos().subscribe((data: Todo[]) => {
       this.todoService.todos = data;
-      this.isLoading = false;
+      setTimeout(() => {
+        this.isLoading = false;
+      }, 500);
     });
   }
 
