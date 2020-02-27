@@ -1,7 +1,7 @@
 <div *ngIf="isLoading" class="row justify-content-center">
   <i class="fas fa-hourglass-start animated rotateOut infinite slow"></i>
 </div>
-<div *ngIf="!isLoading" class="row justify-content-center">
+<div *ngIf="!isLoading" class="row justify-content-center animated fadeInUp">
   <div class="col-lg-6 col-md-8 col-sm-12 col-12">
     <div class="jumbotron">
       <h2 style="font-size: 1.5rem"><strong>N°{{ todo.id }} - </strong> {{ todo.title }}</h2>

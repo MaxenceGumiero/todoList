@@ -21,7 +21,7 @@ export class TodoService {
     this.todos = [];
   }
 
-  handleError = (error) => {
+  private handleError = (error) => {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {
       errorMessage = error.error.message;
@@ -32,16 +32,22 @@ export class TodoService {
     return throwError(errorMessage);
   }
 
-  getTodos = (): Observable<Todo[]> => {
+  public getTodos = (): Observable<Todo[]> => {
     return this.http.get<Todo[]>(this.apiURL).pipe(
       retry(1),
       catchError(this.handleError)
     );
   }
 
-  getOneTodo = (id: number): Observable<Todo> => {
+  public getOneTodo = (id: number): Observable<Todo> => {
     return this.http.get<Todo>(`${this.apiURL}/${id}`).pipe(
       retry(1),
+      catchError(this.handleError)
+    );
+  }
+
+  public postTodo = (todo: Todo): Observable<Todo> => {
+    return this.http.post<Todo>(`${this.apiURL}/new`, todo, this.httpOptions).pipe(
       catchError(this.handleError)
     );
   }
