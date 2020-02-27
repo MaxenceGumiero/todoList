@@ -1,0 +1,10 @@
+{
+  "/todos": {
+    "target": "http://localhost:8000/todos",
+    "secure": true,
+    "pathRewrite": {
+      "^/todos": ""
+    },
+    "changeOrigin": true
+  }
+}

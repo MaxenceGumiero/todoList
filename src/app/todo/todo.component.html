@@ -1,4 +1,4 @@
-<ul class="list-unstyled row">
+<ul *ngIf="!isLoading" class="list-unstyled row">
   <li *ngFor="let todo of todoService.todos" class="col-lg-4 col-md-6 col-sm-12 col-12">
     <div class="jumbotron">
       <h2 style="font-size: 1.5rem"><strong>N°{{ todo.id }} - </strong> {{ todo.title }}</h2>

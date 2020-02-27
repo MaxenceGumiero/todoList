@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 import { Todo } from './Todo';
-import { TODOS } from './todos';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError, retry } from 'rxjs/internal/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -9,16 +10,42 @@ import { TODOS } from './todos';
 export class TodoService {
   public todos: Todo[];
   public todo: Todo;
-  private todoListUrl = 'http://localhost:8000/todos';
+  // private todoListUrl = 'http://localhost:8000/todos';
+  private apiURL = 'http://localhost:8000/todos';
+  private httpOptions = {
+    headers: new HttpHeaders({
+      'Content-Type': 'application/json'
+    })
+  };
 
-  constructor(private httpClient: HttpClient) { }
-
-  public getTodoListUrl = () => {
-    this.httpClient.get(this.todoListUrl)
-      .subscribe((response: Todo[]) => {
-        console.log(response);
-        this.todos = response;
-        console.log(this.todos);
-      });
+  constructor(private http: HttpClient) {
+    this.todos = [];
   }
+
+  handleError = (error) => {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      errorMessage = error.error.message;
+    } else {
+      errorMessage = `Error Code: ${error.status}\nMessage: ${error.message}`;
+    }
+    console.log(errorMessage);
+    return throwError(errorMessage);
+  }
+
+  getTodos = (): Observable<Todo[]> => {
+    return this.http.get<Todo[]>(this.apiURL).pipe(
+      retry(1),
+      catchError(this.handleError)
+    );
+  }
+
+  // public getTodos = () => {
+  //   this.httpClient.get(this.apiURL)
+  //     .subscribe((response: Todo[]) => {
+  //       console.log(response);
+  //       this.todos = response;
+  //       console.log(this.todos);
+  //     });
+  // }
 }

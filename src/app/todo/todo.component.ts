@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { TodoService } from '../todo.service';
+import { Router } from '@angular/router';
+import { Todo } from '../Todo';
 
 @Component({
   selector: 'app-todo',
@@ -8,10 +10,19 @@ import { TodoService } from '../todo.service';
 })
 export class TodoComponent implements OnInit {
 
-  constructor(public todoService: TodoService) { }
+  public isLoading: boolean;
+
+  constructor(
+    public todoService: TodoService,
+    private router: Router
+  ) { }
 
   ngOnInit() {
-    this.todoService.getTodoListUrl();
+    this.isLoading = true;
+    return this.todoService.getTodos().subscribe((data: Todo[]) => {
+      this.todoService.todos = data;
+      this.isLoading = false;
+    });
   }
 
 }
